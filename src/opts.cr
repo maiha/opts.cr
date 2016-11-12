@@ -66,7 +66,7 @@ module Opts
           parser.on({{short}}, {{long}}, "{{desc.id}} (default: {{default.id}}).") {|x| self.{{name.var}} = x}
         {% end %}
       {% else %}
-         parser.on({{short}}, {{long}}, "{{desc}}.") {self.{{name.var}} = true}
+         parser.on({{short}}, {{long}}, "{{desc.id}}.") {self.{{name.var}} = true}
       {% end %}
     end
   end
