@@ -1,4 +1,4 @@
-# opts.cr
+# opts.cr [![Build Status](https://travis-ci.org/maiha/opts.cr.svg?branch=master)](https://travis-ci.org/maiha/opts.cr)
 
 a wrapper for OptionParser to provide default values and handy args
 
@@ -18,16 +18,22 @@ dependencies:
 
 ### class methods
 
-- option : declare a variable which is a proxy to OptionParser
-- NOTE: `version` and `help` must be defined
+- `option` : declare a variable which is a proxy to OptionParser
+
+### class consts
+
+override `PROGRAM` `VERSION` `ARGS` `USAGE` as you like.
+- see [src/opts.cr](src/opts.cr)
 
 ### instance methods
 
-- args : command line args
-- parser : a runtime instance of OptionParser
-- xxx : a getter method defined by `option xxx`
+- `args` : command line args
+- `parser` : a runtime instance of OptionParser
+- `xxx` : a getter method defined by `option xxx`
+- `version` : reserved for special option which delegates to `show_version`
+- `help` : reserved for special option which delegates to `show_usage`
 
-### example
+## Usage
 
 ```crystal
 require "opts"
@@ -64,7 +70,10 @@ Main.run
 % ./foo -h localhost a b
 ["localhost", 80, ["a", "b"]]
 
-% ./foo -x localhost a b
+% ./foo --version
+foo 0.1.0
+
+% ./foo -x
 foo version 0.1.0
 
 Usage: foo
@@ -77,6 +86,15 @@ Options:
 
 Invalid option: -x
 ```
+
+## Further usages
+
+Real products
+
+- https://github.com/maiha/redis-cluster-benchmark.cr/blob/master/src/bin/main.cr
+- https://github.com/maiha/dstat-redis.cr/blob/master/src/bin/main.cr
+- https://github.com/maiha/rcm.cr/blob/master/src/bin/rcm.cr
+- https://github.com/maiha/grafana-redis.cr/blob/master/src/bin/main.cr
 
 ## Contributing
 

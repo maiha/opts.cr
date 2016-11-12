@@ -3,6 +3,18 @@ require "colorize"
 require "./lib/*"
 
 module Opts
+  PROGRAM = "#{$0}".split("/").last
+  VERSION = "unknown"
+  ARGS    = ""
+  USAGE   = <<-EOF
+    {{program}} version {{version}}
+
+    Usage: {{program}} {{args}}
+
+    Options:
+    {{options}}
+    EOF
+
   class OptionError < Exception
   end
 
@@ -111,20 +123,8 @@ module Opts
     end
   end
 
-  PROGRAM = "#{$0}".split("/").last
-  VERSION = "unknown"
-  ARGS    = ""
-  USAGE   = <<-EOF
-    {{program}} version {{version}}
-
-    Usage: {{program}} {{args}}
-
-    Options:
-    {{options}}
-    EOF
-
   protected def die(reason : String)
-    STDERR.puts usage
+    STDERR.puts show_usage
     STDERR.puts ""
     STDERR.puts reason.colorize(:red)
     exit -1
@@ -140,16 +140,20 @@ module Opts
       main = new
       main.argv = argv
       main.args                        # kick parse!
-      main.exit(main.usage) if main.help
-      main.exit("#{PROGRAM} #{VERSION}") if main.version
+      main.exit(main.show_usage) if main.responds_to?(:help) && main.help
+      main.exit(main.show_version) if main.responds_to?(:version) && main.version
       main.run
     rescue err
       STDERR.puts err.to_s.colorize(:red)
       exit 1
     end
 
-    def usage
+    def show_usage
       USAGE.gsub(/\{{program}}/, PROGRAM).gsub(/\{{version}}/, VERSION).gsub(/\{{args}}/, ARGS).gsub(/\{{options}}/, new_option_parser.to_s)
+    end
+
+    def show_version
+      "#{PROGRAM} #{VERSION}"
     end
   end
 end
