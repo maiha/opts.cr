@@ -2,7 +2,7 @@
 
 a wrapper for OptionParser to provide default values and handy args
 
-- worked on crystal-0.19.4
+- crystal: 0.19.4, 0.20.0
 
 ## Installation
 
