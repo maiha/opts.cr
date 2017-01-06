@@ -30,13 +30,16 @@ module Opts
     end
   end
             
-  macro def args : Array(String)
-    begin
-      @args ||= option_parser.parse(@argv)
-      return @args.not_nil!
-    rescue err : ArgumentError | Opts::OptionError | OptionParser::Exception
-      die err.to_s
+  def args : Array(String)
+    if @args.nil?
+      begin
+        option_parser.parse(@argv)
+        @args = @argv
+      rescue err : ArgumentError | Opts::OptionError | OptionParser::Exception
+        die err.to_s
+      end
     end
+    @args.not_nil!
   end
 
   macro option(name, long, desc, default)

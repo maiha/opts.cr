@@ -2,7 +2,7 @@
 
 a wrapper for OptionParser to provide default values and handy args
 
-- crystal: 0.19.4, 0.20.0
+- crystal: 0.20.4
 
 ## Installation
 
