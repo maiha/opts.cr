@@ -45,7 +45,7 @@ describe "usage features" do
 
     describe "(program name)" do
       it "should return $0 in default" do
-        Main.new.show_usage.starts_with?("crystal-run-spec.tmp").should be_true
+        Main.new.show_usage.split.first.should eq("crystal-run-spec.tmp")
       end
 
       it "should respect PROGRAM const" do
@@ -53,13 +53,13 @@ describe "usage features" do
       end
     end
 
-    describe "(version)" do
-      it "should return 'unknown' in default" do
-        Main.new.show_usage.should match(/version unknown/)
+    describe "#show_version" do
+      it "should return 'name' in default" do
+        Main.new.show_version.should match(/^crystal-run-spec.tmp /)
       end
 
       it "should respect VERSION const" do
-        MainWithVersion.new.show_usage.should match(/version 123/)
+        MainWithVersion.new.show_version.should match(/ 123$/)
       end
     end
 

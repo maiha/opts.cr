@@ -1,13 +1,14 @@
 require "option_parser"
 require "colorize"
+require "shard"
 require "./lib/*"
 
 module Opts
   PROGRAM = "#{$0}".split("/").last
-  VERSION = "unknown"
+  VERSION = Shard.git_description.split(/\s+/, 2).last
   ARGS    = ""
   USAGE   = <<-EOF
-    {{program}} version {{version}}
+    {{version}}
 
     Usage: {{program}} {{args}}
 
@@ -108,24 +109,6 @@ module Opts
     }
   end
 
-  macro usage_args(str)
-    protected def usage_args
-      {{str}}
-    end
-  end
-
-  macro version(str)
-    protected def version
-      {{str}}
-    end
-  end
-
-  macro program(str)
-    protected def program
-      {{str}}
-    end
-  end
-
   protected def die(reason : String)
     STDERR.puts show_usage
     STDERR.puts ""
@@ -152,7 +135,7 @@ module Opts
     end
 
     def show_usage
-      USAGE.gsub(/\{{program}}/, PROGRAM).gsub(/\{{version}}/, VERSION).gsub(/\{{args}}/, ARGS).gsub(/\{{options}}/, new_option_parser.to_s)
+      USAGE.gsub(/\{{version}}/, show_version).gsub(/\{{args}}/, ARGS).gsub(/\{{options}}/, new_option_parser.to_s)
     end
 
     def show_version
