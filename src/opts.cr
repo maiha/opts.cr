@@ -46,6 +46,10 @@ module Opts
   macro option(name, long, desc, default)
     var {{name}}, {{default}}
 
+    {% if name.type.stringify == "Bool" %}
+      def {{name.var.id}}? ; {{name.var.id}} ; end
+    {% end %}
+    
     def register_option_{{name.var.id}}(parser)
       {% if long.stringify =~ /[\s=]/ %}
         {% if name.type.stringify == "Int64" %}
@@ -68,6 +72,10 @@ module Opts
   macro option(name, short, long, desc, default)
     var {{name}}, {{default}}
 
+    {% if name.type.stringify == "Bool" %}
+      def {{name}}? ; {{name}} ; end
+    {% end %}
+    
     def register_option_{{name.var.id}}(parser)
       {% if long.stringify =~ /[\s=]/ %}
         {% if name.type.stringify == "Int64" %}
@@ -109,6 +117,17 @@ module Opts
     }
   end
 
+  # should be overridden by subclass
+  protected def verbose?
+    false
+  end
+  
+  protected def on_error(err : Exception)
+    STDERR.puts err.to_s.colorize(:red)
+    err.inspect_with_backtrace(STDERR)
+    exit 1
+  end
+    
   protected def die(reason : String)
     STDERR.puts show_usage
     STDERR.puts ""
@@ -130,8 +149,7 @@ module Opts
       main.exit(main.show_version) if main.responds_to?(:version) && main.version
       main.run
     rescue err
-      STDERR.puts err.to_s.colorize(:red)
-      exit 1
+      main.try(&.on_error(err))
     end
 
     def show_usage
