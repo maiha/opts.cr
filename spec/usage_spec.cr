@@ -48,8 +48,18 @@ describe "usage features" do
         Main.new.show_usage.split.first.should eq("crystal-run-spec.tmp")
       end
 
+      it "should resolve parameters in default" do
+        usage = Main.new.show_usage
+        usage.should_not contain("{{version}}")
+        usage.should_not contain("{{program}}")
+        usage.should_not contain("{{args}}")
+        usage.should_not contain("{{options}}")
+      end
+      
       it "should respect PROGRAM const" do
-        MainWithProgram.new.show_usage.starts_with?("foo ").should be_true
+        usage = MainWithProgram.new.show_usage
+        usage.starts_with?("foo ").should be_true
+        usage.should contain("Usage: foo ")
       end
     end
 

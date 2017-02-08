@@ -153,7 +153,7 @@ module Opts
     end
 
     def show_usage
-      USAGE.gsub(/\{{version}}/, show_version).gsub(/\{{args}}/, ARGS).gsub(/\{{options}}/, new_option_parser.to_s)
+      USAGE.gsub(/\{{version}}/, show_version).gsub(/\{{program}}/, PROGRAM).gsub(/\{{args}}/, ARGS).gsub(/\{{options}}/, new_option_parser.to_s)
     end
 
     def show_version
