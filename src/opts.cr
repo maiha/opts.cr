@@ -21,6 +21,15 @@ module Opts
 
   property argv : Array(String) = ARGV
 
+  abstract def run
+  def run(argv : Array(String))
+    self.argv = argv
+    args                        # kick parse!
+    self.exit(show_usage) if responds_to?(:help) && self.help
+    self.exit(show_version) if responds_to?(:version) && self.version
+    run
+  end
+    
   @args : Array(String)?
 
   macro expect_error(klass)
@@ -143,11 +152,7 @@ module Opts
   macro included
     def self.run(argv = ARGV)
       main = new
-      main.argv = argv
-      main.args                        # kick parse!
-      main.exit(main.show_usage) if main.responds_to?(:help) && main.help
-      main.exit(main.show_version) if main.responds_to?(:version) && main.version
-      main.run
+      main.run(argv)
     rescue err
       main.try(&.on_error(err))
     end

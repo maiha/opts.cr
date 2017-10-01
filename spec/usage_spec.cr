@@ -2,36 +2,49 @@ require "./spec_helper"
 
 private class Main
   include Opts
+  def run
+  end
 end
 
 private class MainWithOptionN
   include Opts
   option n : Int32, "-n num"  , "give a number", 1
+  def run
+  end
 end
 
 private class MainWithProgram
   include Opts
   PROGRAM = "foo"
+  def run
+  end
 end
 
 private class MainWithVersion
   include Opts
   VERSION = "123"
+  def run
+  end
 end
 
 private class MainWithArgs
   include Opts
   ARGS = "file1 file2"
+  def run
+  end
 end
 
 private class MainWithUsage
   include Opts
   USAGE = "custom usage"
+  def run
+  end
 end
 
 private class MainWithRun
   include Opts
   def run
+    self
   end
 end
 
@@ -90,6 +103,19 @@ describe "usage features" do
     it "should work without help option" do
       # nothing raised
       MainWithRun.run
+    end
+
+    it "should set #argv" do
+      main = MainWithRun.run(["a", "b"]).not_nil!
+      main.argv.should eq(["a", "b"])
+    end
+  end
+
+  describe "#run(argv)" do
+    it "should set #argv" do
+      main = MainWithRun.new
+      main.run(["a", "b"])
+      main.argv.should eq(["a", "b"])
     end
   end
 end
