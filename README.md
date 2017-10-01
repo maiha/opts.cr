@@ -2,7 +2,7 @@
 
 a wrapper for OptionParser to provide default values and handy args
 
-- crystal: 0.20.4
+- crystal: 0.22.0
 
 ## Installation
 
@@ -12,7 +12,7 @@ Add this to your application's `shard.yml`:
 dependencies:
   opts:
     github: maiha/opts.cr
-    version: 0.2.3
+    version: 0.3.0
 ```
 
 ## Opts module

@@ -28,6 +28,8 @@ module Opts
     self.exit(show_usage) if responds_to?(:help) && self.help
     self.exit(show_version) if responds_to?(:version) && self.version
     run
+  rescue err
+    on_error(err)
   end
     
   @args : Array(String)?
@@ -151,10 +153,7 @@ module Opts
 
   macro included
     def self.run(argv = ARGV)
-      main = new
-      main.run(argv)
-    rescue err
-      main.try(&.on_error(err))
+      new.run(argv)
     end
 
     def show_usage
