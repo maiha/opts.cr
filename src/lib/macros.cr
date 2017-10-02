@@ -1,10 +1,13 @@
+class VarNotInitialized < Exception
+end
+
 macro val(name, default)
   @{{name.var.id}} : {{name.type}}?
   def {{name.var.id}}
     if @{{name.var.id}}.nil?
       @{{name.var.id}} = ({{default}})
       if @{{name.var.id}}.nil?
-        raise "val `{{name.var.id}}` must be initialized, but got nil in #{__FILE__}:#{__LINE__}"
+        raise VarNotInitialized.new("val `{{name.var.id}}` must be initialized, but got nil in #{__FILE__}:#{__LINE__}")
       end
     end
     @{{name.var.id}}.not_nil!
@@ -21,7 +24,7 @@ macro val(name)
     if @{{name.var.id}}.nil?
       @{{name.var.id}} = ({{name.value}})
       if @{{name.var.id}}.nil?
-        raise "val `{{name.var.id}}` must be initialized, but got nil in #{__FILE__}:#{__LINE__}"
+        raise VarNotInitialized.new("val `{{name.var.id}}` must be initialized, but got nil in #{__FILE__}:#{__LINE__}")
       end
     end
     @{{name.var.id}}.not_nil!
@@ -34,7 +37,7 @@ macro var(name, default)
       {{default}}
     else
       if @{{name.var.id}}.nil?
-        raise "var `{{name.var.id}}` must be initialized, but got nil in #{__FILE__}:#{__LINE__}"
+        raise VarNotInitialized.new("var `{{name.var.id}}` must be initialized, but got nil in #{__FILE__}:#{__LINE__}")
       end
       @{{name.var.id}}.not_nil!
     end
@@ -58,7 +61,11 @@ macro var(name)
     {% if name.type.stringify =~ / ::Nil$/ %}
       @{{name.var.id}}
     {% else %}
-      @{{name.var.id}}.not_nil!
+      if @{{name.var.id}}.nil?
+        raise VarNotInitialized.new("var `{{name.var.id}}` must be initialized, but got nil in #{__FILE__}:#{__LINE__}")
+      else
+        @{{name.var.id}}.not_nil!
+      end
     {% end %}
   end
 

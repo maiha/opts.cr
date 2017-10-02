@@ -1,41 +1,63 @@
 require "./spec_helper"
 
 private class App1
-  val li : Int32 = 0
-  var ri : Int32 = 0
+  val li  : Int32
+  val lid : Int32 = 0
+  var rid : Int32 = 0
 
-  var rs : String = "a"
+  var rs  : String
+  var rsd : String = "a"
 
-  val lh : Hash(String, String) = Hash(String, String).new
-  var rh : Hash(String, String) = Hash(String, String).new
+  val lhd : Hash(String, String) = Hash(String, String).new
+  var rhd : Hash(String, String) = Hash(String, String).new
 
-  var rsn : String? = nil
+  var rsnd : String? = nil
 end
 
 describe "Val" do
-  it "Int32" do
-    App1.new.li.should eq(0)
+  context "(without default)" do
+    it "String" do
+      expect_raises(VarNotInitialized) do
+        App1.new.li
+      end
+    end
   end
 
-  it "Hash(String, String)" do
-    App1.new.lh.should eq(Hash(String, String).new)
+  context "(with default)" do
+    it "Int32" do
+      App1.new.lid.should eq(0)
+    end
+
+    it "Hash(String, String)" do
+      App1.new.lhd.should eq(Hash(String, String).new)
+    end
   end
 end
 
 describe "Var" do
-  it "Int32" do
-    App1.new.ri.should eq(0)
+  context "(without default)" do
+    it "String" do
+      expect_raises(VarNotInitialized) do
+        App1.new.rs
+      end
+    end
   end
 
-  it "Hash(String, String)" do
-    App1.new.rh.should eq(Hash(String, String).new)
-  end
+  context "(with default)" do
+    it "Int32" do
+      App1.new.rid.should eq(0)
+    end
 
-  it "String" do
-    App1.new.rs.should eq("a")
-  end
+    it "Hash(String, String)" do
+      App1.new.rhd.should eq(Hash(String, String).new)
+    end
 
-  it "String?" do
-    App1.new.rsn.should eq(nil)
+    it "String" do
+      App1.new.rsd.should eq("a")
+    end
+
+    it "String?" do
+      App1.new.rsnd.should eq(nil)
+    end
   end
 end
