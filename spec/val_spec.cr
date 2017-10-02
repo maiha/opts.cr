@@ -8,6 +8,8 @@ private class App1
 
   val lh : Hash(String, String) = Hash(String, String).new
   var rh : Hash(String, String) = Hash(String, String).new
+
+  var rsn : String? = nil
 end
 
 describe "Val" do
@@ -31,5 +33,9 @@ describe "Var" do
 
   it "String" do
     App1.new.rs.should eq("a")
+  end
+
+  it "String?" do
+    App1.new.rsn.should eq(nil)
   end
 end

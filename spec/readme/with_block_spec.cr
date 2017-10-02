@@ -1,4 +1,4 @@
-require "./spec_helper"
+require "../spec_helper"
 
 private class App1
   include Opts
@@ -14,7 +14,7 @@ private class App1
 end
 
 describe "example codes in README" do
-  context "(Types)" do
+  context "(with block)" do
     it "works" do
       app = App1.run("-s a -s b -d x=1 foo".split)
       app.list.should eq(["a", "b"])

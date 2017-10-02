@@ -117,6 +117,19 @@ App1.run(["-s", "a"]).list   # => ["a"]
 App1.run(["-d", "x=1"]).hash # => {"x" => "1"}
 ```
 
+### Nilable
+
+```crystal
+class App2
+  include Opts
+
+  option token : String?, "-a TOKEN", "Your access token", nil
+end
+
+App2.run.token                # => nil
+App2.run(["-a", "xxx"]).token # => "xxx"
+```
+
 ## Further usages
 
 Real products

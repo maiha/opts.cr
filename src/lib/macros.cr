@@ -53,7 +53,13 @@ macro var(name)
     if @{{name.var.id}}.nil?
       @{{name.var.id}} = ({{name.value}})
     end
-    @{{name.var.id}}.not_nil!
+
+    # String? = "String | ::Nil"
+    {% if name.type.stringify =~ / ::Nil$/ %}
+      @{{name.var.id}}
+    {% else %}
+      @{{name.var.id}}.not_nil!
+    {% end %}
   end
 
   def {{name.var.id}}=(@{{name.var.id}} : {{name.type}})
