@@ -116,9 +116,11 @@ module Opts
 
   macro def new_option_parser : OptionParser
     OptionParser.new.tap{|p|
-      {% for name in @type.methods.map(&.name.stringify) %}
-        {% if name =~ /\Aregister_option_/ %}
-          {{name.id}}(p)
+      {% for methods in ([@type] + @type.ancestors).map(&.methods.map(&.name.stringify)) %}
+        {% for name in methods %}
+          {% if name =~ /\Aregister_option_/ %}
+            {{name.id}}(p)
+          {% end %}
         {% end %}
       {% end %}
     }
