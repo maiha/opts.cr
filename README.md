@@ -37,18 +37,19 @@ override `PROGRAM` `VERSION` `ARGS` `USAGE` as you like.
 ## Flow
 
 1. `App(or Opts).run(ARGV)`  # appliation entrypoint
-2. `app = Main.new`          # instance creation
-3. `app.setup(ARGV)`         # parse ARGV by parse and `args` is now available
-4. `app.setup`               # aplication setting and/or mocks in test
-5. `app.run`                 # (required) write main routine here
-6. `app.on_error(err)`       # when a error occurred
+2. `app = App.new`           # instance creation
+3. `app.run(ARGV)`           # instance etnrypoint
+4.   + `app.setup(ARGV)`     # parse ARGV by parse and `args` is now available
+5.   + `app.setup`           # aplication setting and/or mocks in test
+6.   + `app.run`             # (required) write main routine here
+7.   + `app.on_error(err)`   # only when an error occurred in `run(ARGV)`
 
 ## Usage
 
 ```crystal
 require "opts"
 
-class Main
+class App
   include Opts
 
   VERSION = "0.1.0"
@@ -64,7 +65,7 @@ class Main
   end
 end
 
-Main.run
+App.run
 ```
 
 ```shell
@@ -95,6 +96,25 @@ Options:
   --version                        Print the version and exit.
 
 Invalid option: -x
+```
+
+### with block
+
+- `v` : special variable used for block parameter
+
+```crystal
+class App1
+  include Opts
+
+  option list : Array(String)       , "-s VALUE", "store into list" do list << v; end
+  option hash : Hash(String, String), "-d VALUE", "store into hash" do
+    key, val = v.split("=", 2)
+    hash[key] = val
+  end
+end
+
+App1.run(["-s", "a"]).list   # => ["a"]
+App1.run(["-d", "x=1"]).hash # => {"x" => "1"}
 ```
 
 ## Further usages

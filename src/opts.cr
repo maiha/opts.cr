@@ -20,6 +20,7 @@ module Opts
   end
 
   property argv : Array(String) = ARGV
+  @args : Array(String)?
 
   # [app flow] step1 : setup args
   def setup(argv : Array(String))
@@ -35,8 +36,14 @@ module Opts
 
   # [app flow] step3 : main routine
   abstract def run
-  
-  @args : Array(String)?
+
+  def run(argv : Array(String))
+    setup(argv)
+    setup
+    run
+  rescue err
+    on_error(err)
+  end
 
   def args : Array(String)
     if @args.nil?
@@ -50,8 +57,21 @@ module Opts
     @args.not_nil!
   end
 
+  # with block works only with `Reference` class
+  macro option(name, long, desc)
+    var {{name}} = {{name.type}}.new
+
+    def register_option_{{name.var.id}}(parser)
+      {% if long.stringify =~ /[\s=]/ %}
+        parser.on({{long}}, "{{desc.id}} (default: {{name.type}}.new).") {|v| {{ yield }} }
+      {% else %}
+        parser.on({{long}}, "{{desc.id}}.") {self.{{name.var}} = true}
+      {% end %}
+    end
+  end
+
   macro option(name, long, desc, default)
-    var {{name}}, {{default}}
+    var {{name}} = {{default}}
 
     {% if name.type.stringify == "Bool" %}
       def {{name.var.id}}? ; {{name.var.id}} ; end
@@ -77,7 +97,7 @@ module Opts
   end
 
   macro option(name, short, long, desc, default)
-    var {{name}}, {{default}}
+    var {{name}} = {{default}}
 
     {% if name.type.stringify == "Bool" %}
       def {{name}}? ; {{name}} ; end
@@ -151,15 +171,7 @@ module Opts
 
   macro included
     def self.run(argv = ARGV)
-      new.tap{|app|
-        begin
-          app.setup(argv)
-          app.setup
-          app.run
-        rescue err
-          app.on_error(err)
-        end
-      }
+      new.tap(&.run(argv))
     end
 
     def show_usage

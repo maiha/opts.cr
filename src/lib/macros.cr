@@ -11,6 +11,23 @@ macro val(name, default)
   end
 end
 
+# name : TypeDeclaration
+#   def var : MacroId
+#   def type : ASTNode
+#   def value : ASTNode | Nop
+macro val(name)
+  @{{name.var.id}} : {{name.type}}?
+  def {{name.var.id}}
+    if @{{name.var.id}}.nil?
+      @{{name.var.id}} = ({{name.value}})
+      if @{{name.var.id}}.nil?
+        raise "val `{{name.var.id}}` must be initialized, but got nil in #{__FILE__}:#{__LINE__}"
+      end
+    end
+    @{{name.var.id}}.not_nil!
+  end
+end
+
 macro var(name, default)
   def {{name.var.id}}
     if @{{name.var.id}}.nil?
@@ -27,6 +44,18 @@ macro var(name, default)
   end
 end
 
+# name : TypeDeclaration
+#   def var : MacroId
+#   def type : ASTNode
+#   def value : ASTNode | Nop
 macro var(name)
-  var({{name}}, {{name.type}}.new)
+  def {{name.var.id}}
+    if @{{name.var.id}}.nil?
+      @{{name.var.id}} = ({{name.value}})
+    end
+    @{{name.var.id}}.not_nil!
+  end
+
+  def {{name.var.id}}=(@{{name.var.id}} : {{name.type}})
+  end
 end
