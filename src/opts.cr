@@ -157,12 +157,15 @@ module Opts
 
   macro included
     def self.run(argv = ARGV)
-      app = new
-      app.setup(argv)
-      app.setup
-      app.run
-    rescue err
-      app.try(&.on_error(err))
+      new.tap{|app|
+        begin
+          app.setup(argv)
+          app.setup
+          app.run
+        rescue err
+          app.on_error(err)
+        end
+      }
     end
 
     def show_usage

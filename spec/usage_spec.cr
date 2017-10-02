@@ -106,7 +106,7 @@ describe "usage features" do
     end
 
     it "should set #argv" do
-      main = MainWithRun.run(["a", "b"]).not_nil!
+      main = MainWithRun.run(["a", "b"])
       main.argv.should eq(["a", "b"])
     end
   end

@@ -28,12 +28,12 @@ end
 
 describe "Instance Method Flow" do
   it "should be [new, setup(args), setup, run]" do
-    app = App1.run(["a", "b"]).not_nil!
+    app = App1.run(["a", "b"])
     app.breadcrumbs.should eq(["new", "setup(args)", "setup", "run"])
   end
 
   it "should accept class level args" do
-    app = App1.run(["a", "b"]).not_nil!
+    app = App1.run(["a", "b"])
     app.accepted_args.should eq(["a", "b"])
   end
 end

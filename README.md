@@ -41,6 +41,7 @@ override `PROGRAM` `VERSION` `ARGS` `USAGE` as you like.
 3. `app.setup(ARGV)`         # parse ARGV by parse and `args` is now available
 4. `app.setup`               # aplication setting and/or mocks in test
 5. `app.run`                 # (required) write main routine here
+6. `app.on_error(err)`       # when a error occurred
 
 ## Usage
 
