@@ -12,7 +12,7 @@ Add this to your application's `shard.yml`:
 dependencies:
   opts:
     github: maiha/opts.cr
-    version: 0.3.0
+    version: 0.3.1
 ```
 
 ## Opts module
