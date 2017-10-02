@@ -38,14 +38,6 @@ module Opts
   
   @args : Array(String)?
 
-  macro expect_error(klass)
-    begin
-      {{yield}}
-    rescue err : {{klass.id}}
-      die err.to_s
-    end
-  end
-            
   def args : Array(String)
     if @args.nil?
       begin
