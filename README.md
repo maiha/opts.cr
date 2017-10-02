@@ -34,6 +34,14 @@ override `PROGRAM` `VERSION` `ARGS` `USAGE` as you like.
 - `version` : reserved for special option which delegates to `show_version`
 - `help` : reserved for special option which delegates to `show_usage`
 
+## Flow
+
+1. `App(or Opts).run(ARGV)`  # appliation entrypoint
+2. `app = Main.new`          # instance creation
+3. `app.setup(ARGV)`         # parse ARGV by parse and `args` is now available
+4. `app.setup`               # aplication setting and/or mocks in test
+5. `app.run`                 # (required) write main routine here
+
 ## Usage
 
 ```crystal

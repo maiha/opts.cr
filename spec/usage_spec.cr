@@ -110,12 +110,4 @@ describe "usage features" do
       main.argv.should eq(["a", "b"])
     end
   end
-
-  describe "#run(argv)" do
-    it "should set #argv" do
-      main = MainWithRun.new
-      main.run(["a", "b"])
-      main.argv.should eq(["a", "b"])
-    end
-  end
 end

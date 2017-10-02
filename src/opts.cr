@@ -21,17 +21,21 @@ module Opts
 
   property argv : Array(String) = ARGV
 
-  abstract def run
-  def run(argv : Array(String))
+  # [app flow] step1 : setup args
+  def setup(argv : Array(String))
     self.argv = argv
     args                        # kick parse!
+  end
+
+  # [app flow] step2 : setup apps
+  def setup
     self.exit(show_usage) if responds_to?(:help) && self.help
     self.exit(show_version) if responds_to?(:version) && self.version
-    run
-  rescue err
-    on_error(err)
   end
-    
+
+  # [app flow] step3 : main routine
+  abstract def run
+  
   @args : Array(String)?
 
   macro expect_error(klass)
@@ -133,7 +137,7 @@ module Opts
     false
   end
   
-  protected def on_error(err : Exception)
+  def on_error(err : Exception)
     STDERR.puts err.to_s.colorize(:red)
     err.inspect_with_backtrace(STDERR)
     exit 1
@@ -153,7 +157,12 @@ module Opts
 
   macro included
     def self.run(argv = ARGV)
-      new.run(argv)
+      app = new
+      app.setup(argv)
+      app.setup
+      app.run
+    rescue err
+      app.try(&.on_error(err))
     end
 
     def show_usage
