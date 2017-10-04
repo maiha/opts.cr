@@ -1,16 +1,10 @@
 require "./spec_helper"
 
-private class Main
-  include Opts
-  def run
-  end
+private class Main < Opts::Base
 end
 
-private class MainWithOptionN
-  include Opts
+private class MainWithOptionN < Opts::Base
   option n : Int32, "-n num"  , "give a number", 1
-  def run
-  end
 end
 
 private class MainWithProgram
