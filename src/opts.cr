@@ -136,7 +136,7 @@ module Opts
     @option_parser ||= new_option_parser
   end
 
-  macro def new_option_parser : OptionParser
+  def new_option_parser : OptionParser
     Parser.new.tap{|p|
       {% for methods in ([@type] + @type.ancestors).map(&.methods.map(&.name.stringify)) %}
         {% for name in methods %}
