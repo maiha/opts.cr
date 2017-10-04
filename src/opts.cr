@@ -28,6 +28,7 @@ module Opts
   def setup(argv : Array(String))
     self.argv = argv
     args                        # kick parse!
+    setup
   end
 
   # [app flow] step2 : setup apps
@@ -41,7 +42,6 @@ module Opts
 
   def run(argv : Array(String))
     setup(argv)
-    setup
     run
   rescue err
     on_error(err)

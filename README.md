@@ -40,9 +40,8 @@ override `PROGRAM` `VERSION` `ARGS` `USAGE` as you like.
 2. `app = App.new`           # instance creation
 3. `app.run(ARGV)`           # instance etnrypoint
 4.   + `app.setup(ARGV)`     # parse ARGV by parse and `args` is now available
-5.   + `app.setup`           # aplication setting and/or mocks in test
-6.   + `app.run`             # (required) write main routine here
-7.   + `app.on_error(err)`   # only when an error occurred in `run(ARGV)`
+5.   + `app.run`             # (required) write main routine here
+6.   + `app.on_error(err)`   # only when an error occurred in `run(ARGV)`
 
 ## Usage
 
