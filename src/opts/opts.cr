@@ -66,11 +66,6 @@ module Opts
       {% end %}
     }
   end
-
-  # should be overridden by subclass
-  protected def verbose?
-    false
-  end
   
   def on_error(err : Exception)
     STDERR.puts err.to_s.colorize(:red)
