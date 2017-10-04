@@ -1,4 +1,4 @@
-require "./spec_helper"
+require "../spec_helper"
 
 private class App1
   val li  : Int32
@@ -12,6 +12,12 @@ private class App1
   var rhd : Hash(String, String) = Hash(String, String).new
 
   var rsnd : String? = nil
+end
+
+private class App2
+  val int  = 0
+  val str  = ""
+  val bool = true
 end
 
 describe "Val" do
@@ -30,6 +36,20 @@ describe "Val" do
 
     it "Hash(String, String)" do
       App1.new.lhd.should eq(Hash(String, String).new)
+    end
+  end
+
+  context "(Assign#Var)" do
+    it "Int32" do
+      App2.new.int.should eq(0)
+    end
+
+    it "String" do
+      App2.new.str.should eq("")
+    end
+
+    it "Bool" do
+      App2.new.bool.should eq(true)
     end
   end
 end

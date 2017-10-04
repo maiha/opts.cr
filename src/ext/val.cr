@@ -14,11 +14,26 @@ macro val(name, default)
   end
 end
 
+macro val(name)
+  {% if name.is_a?(Assign) %}
+     val_assign({{name}})
+  {% elsif name.is_a?(TypeDeclaration) %}
+     val_type_declaration({{name}})
+  {% end %}
+end
+
+# assign : Assign
+macro val_assign(assign)
+  def {{assign.target}}
+    {{assign.value}}
+  end
+end
+
 # name : TypeDeclaration
 #   def var : MacroId
 #   def type : ASTNode
 #   def value : ASTNode | Nop
-macro val(name)
+macro val_type_declaration(name)
   @{{name.var.id}} : {{name.type}}?
   def {{name.var.id}}
     if @{{name.var.id}}.nil?
