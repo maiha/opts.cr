@@ -1,7 +1,9 @@
 require "option_parser"
 require "colorize"
 require "shard"
+require "pretty"
 require "./lib/*"
+require "./opts/*"
 
 module Opts
   PROGRAM = "#{$0}".split("/").last
@@ -135,7 +137,7 @@ module Opts
   end
 
   macro def new_option_parser : OptionParser
-    OptionParser.new.tap{|p|
+    Parser.new.tap{|p|
       {% for methods in ([@type] + @type.ancestors).map(&.methods.map(&.name.stringify)) %}
         {% for name in methods %}
           {% if name =~ /\Aregister_option_/ %}
