@@ -1,15 +1,15 @@
 name: opts
-version: 0.4.1
+version: 0.4.2
 
 crystal: 0.22.0
 
 dependencies:
   shard:
     github: maiha/shard.cr
-    version: ~> 0.2.0
+    version: ">= 0.2.0"
   pretty:
     github: maiha/pretty.cr
-    version: ~> 0.1.0
+    version: ">= 0.2.0"
 
 authors:
   - maiha <maiha@wota.jp>
