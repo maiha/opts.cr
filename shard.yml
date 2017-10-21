@@ -10,6 +10,9 @@ dependencies:
   pretty:
     github: maiha/pretty.cr
     version: ">= 0.2.0"
+  var:
+    github: maiha/var.cr
+    version: ">= 0.1.0"
 
 authors:
   - maiha <maiha@wota.jp>
