@@ -1,5 +1,5 @@
 module Opts
-  PROGRAM = "#{$0}".split("/").last
+  PROGRAM = "#{PROGRAM_NAME}".split("/").last
   VERSION = Shard.git_description.split(/\s+/, 2).last
   ARGS    = ""
   USAGE   = <<-EOF
